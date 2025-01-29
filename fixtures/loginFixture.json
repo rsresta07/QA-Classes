@@ -1,0 +1,10 @@
+{
+  "validUser": {
+    "userName": "r.sresta07@gmail.com",
+    "password": "tqzVR3j9pXSd.Hf"
+  },
+  "inValidUser": {
+    "userName": "r.sres07@gmail.com",
+    "password": "tqzVR3j"
+  }
+}
