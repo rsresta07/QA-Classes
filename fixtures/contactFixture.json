@@ -1,0 +1,15 @@
+{
+  "contact": {
+    "firstName": "Ramesh",
+    "lastName": "Shrestha",
+    "dob": "2002-01-05",
+    "email": "r.sresta07@gmail.com",
+    "phone": "1234567890",
+    "address1": "nayabazar, ktm",
+    "address2": "nayabazar, pkr",
+    "city": "ktm",
+    "province": "3",
+    "postalCode": "12345",
+    "country": "Nepal"
+  }
+}
