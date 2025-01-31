@@ -118,6 +118,9 @@ exports.ContactPage = class ContactPage {
 
         flag = true;
       }
+      if (flag) {
+        break;
+      }
     }
     if (!flag) {
       throw new Error("No matching contact row found");
