@@ -27,7 +27,6 @@ test.describe("Contact testcases", () => {
       contactTestData.contact.postalCode,
       contactTestData.contact.country
     );
-    await contact.viewContact();
     await contact.validateContactCreated(
       contactTestData.contact.firstName,
       contactTestData.contact.lastName,

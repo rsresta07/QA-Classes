@@ -1,4 +1,6 @@
 const { expect } = require("@playwright/test");
+const { time } = require("console");
+const { setFlagsFromString } = require("v8");
 
 exports.ContactPage = class ContactPage {
   constructor(page) {
@@ -16,6 +18,8 @@ exports.ContactPage = class ContactPage {
     this.postalCode = '//input[@placeholder="Postal Code"]';
     this.country = '//input[@placeholder="Country"]';
     this.Save = '//button[@id="submit"]';
+
+    this.Show = '//tr[@class="contactTableBodyRow"]';
 
     this.savedFirstName = '//span[@id="firstName"]';
     this.savedLastName = '//span[@id="lastName"]';
@@ -73,32 +77,50 @@ exports.ContactPage = class ContactPage {
     postalCode,
     country
   ) {
-    const fnameValidation = await this.page.locator(this.savedFirstName);
-    const lnameValidation = await this.page.locator(this.savedLastName);
-    const dobValidation = await this.page.locator(this.savedDob);
-    const emailValidation = await this.page.locator(this.savedEmail);
-    const phoneValidation = await this.page.locator(this.savedPhone);
-    const address1Validation = await this.page.locator(this.savedAddress1);
-    const address2Validation = await this.page.locator(this.savedAddress2);
-    const cityValidation = await this.page.locator(this.savedCity);
-    const stateValidation = await this.page.locator(this.savedState);
-    const postalCodeValidation = await this.page.locator(this.savedPostalCode);
-    const countryValidation = await this.page.locator(this.savedCountry);
+    let flag = false;
 
-    await expect(fnameValidation).toHaveText(firstName);
-    await expect(lnameValidation).toHaveText(lastName);
-    await expect(dobValidation).toHaveText(dob);
-    await expect(emailValidation).toHaveText(email);
-    await expect(phoneValidation).toHaveText(phone);
-    await expect(address1Validation).toHaveText(address1);
-    await expect(address2Validation).toHaveText(address2);
-    await expect(cityValidation).toHaveText(city);
-    await expect(stateValidation).toHaveText(state);
-    await expect(postalCodeValidation).toHaveText(postalCode);
-    await expect(countryValidation).toHaveText(country);
-  }
+    await this.page.waitForSelector(this.Show, { state: "visible" });
+    const rows = await this.page.locator(this.Show).all();
+    for (const row of rows) {
+      const rowText = await row.innerText({ timeout: 5000 });
 
-  async viewContact() {
-    await this.page.locator(this.viewCreatedContact).click();
+      if (
+        rowText.includes(firstName + " " + lastName) &&
+        rowText.includes(email)
+      ) {
+        await row.click();
+
+        const fnameValidation = await this.page.locator(this.savedFirstName);
+        const lnameValidation = await this.page.locator(this.savedLastName);
+        const dobValidation = await this.page.locator(this.savedDob);
+        const emailValidation = await this.page.locator(this.savedEmail);
+        const phoneValidation = await this.page.locator(this.savedPhone);
+        const address1Validation = await this.page.locator(this.savedAddress1);
+        const address2Validation = await this.page.locator(this.savedAddress2);
+        const cityValidation = await this.page.locator(this.savedCity);
+        const stateValidation = await this.page.locator(this.savedState);
+        const postalCodeValidation = await this.page.locator(
+          this.savedPostalCode
+        );
+        const countryValidation = await this.page.locator(this.savedCountry);
+
+        await expect(fnameValidation).toHaveText(firstName);
+        await expect(lnameValidation).toHaveText(lastName);
+        await expect(dobValidation).toHaveText(dob);
+        await expect(emailValidation).toHaveText(email);
+        await expect(phoneValidation).toHaveText(phone);
+        await expect(address1Validation).toHaveText(address1);
+        await expect(address2Validation).toHaveText(address2);
+        await expect(cityValidation).toHaveText(city);
+        await expect(stateValidation).toHaveText(state);
+        await expect(postalCodeValidation).toHaveText(postalCode);
+        await expect(countryValidation).toHaveText(country);
+
+        flag = true;
+      }
+    }
+    if (!flag) {
+      throw new Error("No matching contact row found");
+    }
   }
 };
