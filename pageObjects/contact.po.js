@@ -3,6 +3,8 @@ const { time } = require("console");
 const { setFlagsFromString } = require("v8");
 
 exports.ContactPage = class ContactPage {
+
+  // Constructor with the location of the elements
   constructor(page) {
     this.page = page;
     this.addContact = '//button[@id="add-contact"]';
@@ -26,16 +28,17 @@ exports.ContactPage = class ContactPage {
     this.savedDob = '//span[@id="birthdate"]';
     this.savedEmail = '//span[@id="email"]';
     this.savedPhone = '//span[@id="phone"]';
-    this.savedAddress1 = '//span[@id="address1"]';
-    this.savedAddress2 = '//span[@id="address2"]';
+    this.savedAddress1 = '//span[@id="street1"]';
+    this.savedAddress2 = '//span[@id="street2"]';
     this.savedCity = '//span[@id="city"]';
-    this.savedState = '//span[@id="state"]';
+    this.savedState = '//span[@id="stateProvince"]';
     this.savedPostalCode = '//span[@id="postalCode"]';
     this.savedCountry = '//span[@id="country"]';
 
     this.viewCreatedContact = '//button[@id="view-contact"]';
   }
 
+  // locator to add contact
   async contactAdd(
     firstName,
     lastName,
@@ -64,6 +67,7 @@ exports.ContactPage = class ContactPage {
     await this.page.locator(this.Save).click();
   }
 
+  // Validate Contact Created and Verify
   async validateContactCreated(
     firstName,
     lastName,
